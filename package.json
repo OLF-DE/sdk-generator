@@ -12,8 +12,7 @@
     "format": "prettier --config .prettierrc './**/*.ts' --write"
   },
   "bin": {
-    "sdk-generate-types": "./generate.mjs",
-    "sdk-generate-sdk": "./index.js"
+    "sdk-generator": "./index.js"
   },
   "author": "",
   "license": "ISC",
