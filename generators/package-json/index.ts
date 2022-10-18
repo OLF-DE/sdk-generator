@@ -21,7 +21,7 @@ export async function generate() {
     description: '',
     author: 'Marc Erdmann',
     license: 'ISC',
-    main: 'index.ts',
+    main: 'client.ts',
     scripts: {
       build: 'tsc client.ts',
     },
