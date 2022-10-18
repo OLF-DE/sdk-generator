@@ -1,8 +1,6 @@
 const axios = require('axios');
 
 import { AxiosInstance, AxiosResponse } from 'axios';
-import qs from 'qs';
-import { operations } from './openapi';
 import { Operation, Response } from './mapper';
 import { addInterceptor } from './axios.config';
 
