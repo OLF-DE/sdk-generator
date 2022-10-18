@@ -1,0 +1,25 @@
+const axios = require('axios');
+
+import { AxiosInstance, AxiosResponse } from 'axios';
+import qs from 'qs';
+import { operations } from './openapi';
+import { Operation, Response } from './mapper';
+import { addInterceptor } from './axios.config';
+
+export class SDK {
+    private axiosInstance: AxiosInstance;
+
+    constructor(config: {
+        baseURL: string,
+        timeout: number,
+        headers: Record<string, string>,
+    }) {
+        this.axiosInstance = axios.create({
+            baseURL: config.baseURL,
+            timeout: config.timeout,
+            headers: config.headers,
+        });
+
+        addInterceptor(this.axiosInstance);
+    }
+

@@ -1,0 +1,69 @@
+import { operations } from './openapi';
+
+// async function ${id} (${params}query: operations['${id}']['parameters']['query']): Promise<operations['${id}']['responses'][200]['content']['application/json']> {
+type KeysWithUnknownValues<T> = {
+  [K in keyof T]: unknown extends T[K] ? K : never;
+}[keyof T];
+
+type ResponseCodesByOperationId<Id extends keyof operations> = operations[Id] extends {
+  responses: unknown;
+}
+  ? Exclude<keyof operations[Id]['responses'], 'default'>
+  : undefined;
+
+type Query<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
+  ? operations[Id]['parameters'] extends { query: unknown }
+    ? operations[Id]['parameters']['query']
+    : Record<string, never>
+  : Record<string, never>;
+
+type Params<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
+  ? operations[Id]['parameters'] extends { path: unknown }
+    ? operations[Id]['parameters']['path']
+    : Record<string, never>
+  : Record<string, never>;
+
+type Body<Id extends keyof operations> = operations[Id] extends {
+  requestBody: unknown;
+}
+  ? operations[Id]['requestBody'] extends {
+      content: { 'application/json': unknown };
+    }
+    ? operations[Id]['requestBody']['content']['application/json']
+    : undefined
+  : undefined;
+
+type Response<Id extends keyof operations> = operations[Id] extends {
+  responses: unknown;
+}
+  ? operations[Id]['responses'][Exclude<
+      keyof operations[Id]['responses'],
+      KeysWithUnknownValues<operations[Id]['responses']>
+    >] extends {
+      content: { 'application/json': unknown };
+    }
+    ? operations[Id]['responses'][Exclude<
+        keyof operations[Id]['responses'],
+        KeysWithUnknownValues<operations[Id]['responses']>
+      >]['content']['application/json']
+    : undefined
+  : undefined;
+
+type ResponseByStatus<
+  Id extends keyof operations,
+  status extends ResponseCodesByOperationId<Id>
+> = operations[Id] extends {
+  responses: unknown;
+}
+  ? operations[Id]['responses'][status] extends {
+      content: { 'application/json': unknown };
+    }
+    ? operations[Id]['responses'][status]['content']['application/json']
+    : undefined
+  : undefined;
+
+export type Operation<Id extends keyof operations> = (config: {
+  params: Params<Id>;
+  query: Query<Id>;
+  body: Body<Id>;
+}) => Promise<Response<Id>>;

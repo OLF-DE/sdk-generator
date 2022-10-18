@@ -1,0 +1,13 @@
+/**
+ * ${description}
+ */
+${id}: Operation<'${id}'> = async (config) => {
+    const { data } = await this.axiosInstance.request<any, AxiosResponse<Response<'${id}'>>>({
+        method: '${method}',
+        url: `${path}`,
+        params: config.query,
+        data: config.body,
+    });
+    return data;
+}
+

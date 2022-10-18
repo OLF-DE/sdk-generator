@@ -1,0 +1,56 @@
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { omitBy, startsWith } from 'lodash';
+
+export function addInterceptor(axiosInstance: AxiosInstance) {
+  // Add a request interceptor
+  axiosInstance.interceptors.request.use(
+    function (requestConfig: AxiosRequestConfig) {
+      if (!requestConfig.headers) requestConfig.headers = {};
+
+      // requestConfig.headers['User-Agent'] = `${config.npm_package_name} (v${config.npm_package_version})`;
+      requestConfig.headers['Accept-Encoding'] = 'gzip';
+
+      return requestConfig;
+    },
+    function (error: any) {
+      // TODO: Do something with request error
+      return Promise.reject(error);
+    }
+  );
+
+  // Add a response interceptor
+  axiosInstance.interceptors.response.use(
+    function (response) {
+      return response;
+    },
+    function (error) {
+      return Promise.reject({
+        message: error.message,
+        data: error.response?.data?.errors ?? error.response?.data?.error ?? error.response?.data,
+        request: {
+          ...omitBy(error.request, (value, key) => {
+            return (
+              startsWith(key, '_') ||
+              typeof key === 'symbol' ||
+              typeof value === 'function' ||
+              ['socket', 'res'].includes(key)
+            );
+          }),
+          agent: omitBy(error.request?.agent, (value, key) => {
+            return (
+              startsWith(key, '_') ||
+              typeof key === 'symbol' ||
+              typeof value === 'function' ||
+              ['sockets'].includes(key)
+            );
+          }),
+        },
+        response: omitBy(error.response, (value, key) => {
+          return (
+            startsWith(key, '_') || typeof key === 'symbol' || typeof value === 'function' || ['request'].includes(key)
+          );
+        }),
+      });
+    }
+  );
+}
