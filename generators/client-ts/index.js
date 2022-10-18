@@ -37,7 +37,7 @@ function generate(operations) {
         }
         fileContent = fileContent.concat('}');
         fileContent = (0, prettier_1.format)(fileContent, { parser: 'typescript' });
-        yield fs_1.promises.writeFile(path_1.default.resolve(__dirname, '../..', config_1.default['output-folder'], './client.ts'), fileContent, {
+        yield fs_1.promises.writeFile(path_1.default.resolve(config_1.default['output-folder'], './client.ts'), fileContent, {
             flag: 'w',
         });
     });

@@ -19,7 +19,7 @@ const config_1 = __importDefault(require("../../config"));
 function generate() {
     return __awaiter(this, void 0, void 0, function* () {
         const template = yield fs_1.promises.readFile(path_1.default.resolve(__dirname, './template.ts.txt'), { encoding: 'utf-8' });
-        return fs_1.promises.writeFile(path_1.default.resolve(__dirname, '../..', config_1.default['output-folder'], './axios.config.ts'), template, {
+        return fs_1.promises.writeFile(path_1.default.resolve(config_1.default['output-folder'], './axios.config.ts'), template, {
             flag: 'w',
         });
     });
