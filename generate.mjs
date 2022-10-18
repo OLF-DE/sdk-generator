@@ -24,8 +24,8 @@ async function main() {
     fs.mkdirSync(config['output-folder']);
   }
 
-  fs.writeFileSync(config['output-folder'], './openapi.d.ts', importsHeader, { flag: 'w' });
-  fs.writeFileSync(config['output-folder'], './openapi.d.ts', output, { flag: 'a' });
+  fs.writeFileSync(path.resolve(config['output-folder'], './openapi.d.ts'), importsHeader, { flag: 'w' });
+  fs.writeFileSync(path.resolve(config['output-folder'], './openapi.d.ts'), output, { flag: 'a' });
 }
 
 main();
