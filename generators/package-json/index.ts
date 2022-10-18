@@ -36,11 +36,7 @@ export async function generate() {
     },
   };
 
-  return fs.writeFile(
-    path.resolve(__dirname, '../..', config['output-folder'], './package.json'),
-    JSON.stringify(packageJson, null, 2),
-    {
-      flag: 'w',
-    }
-  );
+  return fs.writeFile(path.resolve(config['output-folder'], './package.json'), JSON.stringify(packageJson, null, 2), {
+    flag: 'w',
+  });
 }

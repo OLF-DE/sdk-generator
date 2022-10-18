@@ -20,12 +20,12 @@ async function main() {
     defaultNonNullable: true,
   });
 
-  if (!fs.existsSync(path.resolve(__dirname, config['output-folder']))) {
-    fs.mkdirSync(path.resolve(__dirname, config['output-folder']));
+  if (!fs.existsSync(config['output-folder'])) {
+    fs.mkdirSync(config['output-folder']);
   }
 
-  fs.writeFileSync(path.resolve(__dirname, config['output-folder'], './openapi.d.ts'), importsHeader, { flag: 'w' });
-  fs.writeFileSync(path.resolve(__dirname, config['output-folder'], './openapi.d.ts'), output, { flag: 'a' });
+  fs.writeFileSync(config['output-folder'], './openapi.d.ts', importsHeader, { flag: 'w' });
+  fs.writeFileSync(config['output-folder'], './openapi.d.ts', output, { flag: 'a' });
 }
 
 main();

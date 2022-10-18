@@ -28,7 +28,7 @@ export async function generate(operations: Array<IOperation>) {
   fileContent = fileContent.concat('}');
 
   fileContent = format(fileContent, { parser: 'typescript' });
-  await fs.writeFile(path.resolve(__dirname, '../..', config['output-folder'], './client.ts'), fileContent, {
+  await fs.writeFile(path.resolve(config['output-folder'], './client.ts'), fileContent, {
     flag: 'w',
   });
 }
