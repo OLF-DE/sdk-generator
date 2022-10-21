@@ -24,16 +24,42 @@ function isHttpMethod(method: string): method is HttpMethod {
 }
 
 function generateJSONPaths(spec: Record<string, unknown>): Record<string, Array<string>> {
+  const jsonPathByFormat: Record<string, Array<string>> = {};
+
   switch (spec.type) {
-    case 'object':
+    case 'object': {
+      for (const property in spec.properties as any) {
+        const result = generateJSONPaths((spec.properties as any)[property]);
+        for (const format in result) {
+          if (!jsonPathByFormat[format]) jsonPathByFormat[format] = [];
+          jsonPathByFormat[format].push(
+            ...result[format].map((jsonPath) => (jsonPath !== '' ? `${property}.${jsonPath}` : property))
+          );
+        }
+      }
       break;
-    case 'array':
+    }
+    case 'array': {
+      const result = generateJSONPaths(spec.items as Record<string, unknown>);
+      for (const format in result) {
+        if (!jsonPathByFormat[format]) jsonPathByFormat[format] = [];
+        jsonPathByFormat[format].push(...result[format].map((jsonPath) => `[*]${jsonPath}`));
+      }
       break;
-    case 'string':
-      break;
-    case 'number':
-      break;
+    }
+    case 'string': {
+      const result: Record<string, Array<string>> = {};
+      if (spec.format) {
+        result[spec.format as string] = [''];
+      }
+      return result;
+    }
+    case 'number': {
+      return {};
+    }
   }
+
+  return jsonPathByFormat;
 }
 
 async function main() {
