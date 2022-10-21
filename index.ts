@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import _ from 'lodash';
 import config from './config';
 import * as generators from './generators';
 
@@ -20,6 +21,19 @@ export interface IOperation {
 
 function isHttpMethod(method: string): method is HttpMethod {
   return HTTP_METHODS.includes(method as HttpMethod);
+}
+
+function generateJSONPaths(spec: Record<string, unknown>): Record<string, Array<string>> {
+  switch (spec.type) {
+    case 'object':
+      break;
+    case 'array':
+      break;
+    case 'string':
+      break;
+    case 'number':
+      break;
+  }
 }
 
 async function main() {
@@ -45,6 +59,17 @@ async function main() {
         console.error(`OperationId is missing for ${method} ${path}`);
         continue;
       }
+
+      /* START FEATURE: SerDes */
+      const jsonPathsByStatusAndFormat: Record<string, Record<string, Array<string>>> = {};
+      for (const [status, responseSpec] of Object.entries(operationSpec.responses)) {
+        const responseContentSpec = _.get(responseSpec, 'content.application/json.schema');
+
+        const jsonPathsByFormat = generateJSONPaths(responseContentSpec);
+        jsonPathsByStatusAndFormat[status] = jsonPathsByFormat;
+        console.log(jsonPathsByFormat);
+      }
+      /* END FEATURE: SerDes */
 
       const operation = {
         id: operationSpec.operationId,
