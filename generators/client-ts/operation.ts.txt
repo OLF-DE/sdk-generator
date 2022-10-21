@@ -7,7 +7,7 @@ ${id}: Operation<'${id}'> = async (config) => {
         AxiosResponse<ResponseByStatus<
             '${id}',
             HttpSuccessStatusCodes & ResponseCodesByOperationId<'${id}'>
-        >
+        >>
     >({
         method: '${method}',
         url: `${path}`,
