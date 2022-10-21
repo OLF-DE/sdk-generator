@@ -26,8 +26,9 @@ export async function generate(operations: Array<IOperation>) {
   }
 
   fileContent = fileContent.concat('}');
-
+  console.log("before Prettier", fileContent);
   fileContent = format(fileContent, { parser: 'typescript' });
+  console.log("after Prettier", fileContent);
   await fs.writeFile(path.resolve(config['output-folder'], './client.ts'), fileContent, {
     flag: 'w',
   });
