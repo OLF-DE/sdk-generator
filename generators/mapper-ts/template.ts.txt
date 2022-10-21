@@ -62,17 +62,9 @@ type ResponseByStatus<
     : undefined
   : undefined;
 
-type RequestConfig<Id extends keyof operations> = Omit<
+type RequestConfig<Id extends keyof operations> =
   (Partial<Params<Id>> extends Params<Id> ? { params?: Params<Id> } : { params: Params<Id> }) &
   (Partial<Query<Id>> extends Query<Id> ? { query?: Query<Id> } : { query: Query<Id> }) &
-  (Partial<Body<Id>> extends Body<Id> ? { body?: Body<Id> } : { body: Body<Id> }),
-  (Body<Id> extends undefined
-    ? 'body'
-    : never) | (Query<Id> extends undefined
-    ? 'query'
-    : never) | (Params<Id> extends undefined
-    ? 'params'
-    : never)
->;
+  (Partial<Body<Id>> extends Body<Id> ? { body?: Body<Id> } : { body: Body<Id> });
 
 export type Operation<Id extends keyof operations> = Partial<RequestConfig<Id>> extends RequestConfig<Id> ? (config?: RequestConfig<Id>) => Promise<Response<Id>> : (config: RequestConfig<Id>) => Promise<Response<Id>>;
