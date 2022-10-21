@@ -20,7 +20,6 @@ export async function generate(operations: Array<IOperation>) {
         description: operation.description ?? operation.summary ?? '',
         method: operation.method,
         path: operation.path.replace(/\{(.*)\}/, '$${config.params.$1}'),
-        params: '',
       })
     );
   }

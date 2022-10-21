@@ -1,4 +1,5 @@
 sdk
+openapi.yml
 
 lib-cov
 *.seed

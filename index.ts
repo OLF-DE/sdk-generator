@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import { promises as fs } from 'fs';
-import yaml from 'yaml';
 import config from './config';
 import * as generators from './generators';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { bundle } = require('@apidevtools/swagger-cli');
 
 const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete'] as const;
 
@@ -15,7 +16,6 @@ export interface IOperation {
   description: string;
   path: string;
   method: HttpMethod;
-  params: Record<string, unknown>;
 }
 
 function isHttpMethod(method: string): method is HttpMethod {
@@ -23,10 +23,11 @@ function isHttpMethod(method: string): method is HttpMethod {
 }
 
 async function main() {
-  const openApiFileContents = await fs.readFile(config['input-file'], {
-    encoding: 'utf-8',
-  });
-  const openApiSpec = yaml.parse(openApiFileContents);
+  const openApiSpec = JSON.parse(
+    await bundle(config['input-file'], {
+      dereference: true,
+    })
+  );
 
   const operations: Record<string, IOperation> = {};
 
@@ -51,7 +52,6 @@ async function main() {
         description: operationSpec.description,
         path,
         method,
-        params: operationSpec.parameters?.filter((p: Record<string, unknown>) => p.in === 'path'),
       };
 
       operations[operation.id] = operation;
