@@ -9,8 +9,8 @@ export class SDK {
 
     constructor(config: {
         baseURL: string,
-        timeout: number,
-        headers: Record<string, string>,
+        timeout?: number,
+        headers?: Record<string, string>,
     }) {
         this.axiosInstance = axios.create({
             baseURL: config.baseURL,
