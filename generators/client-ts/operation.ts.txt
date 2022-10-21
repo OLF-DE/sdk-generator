@@ -2,7 +2,13 @@
  * ${description}
  */
 ${id}: Operation<'${id}'> = async (config) => {
-    const { data } = await this.axiosInstance.request<any, AxiosResponse<Response<'${id}'>>>({
+    const { data } = await this.axiosInstance.request<
+        any,
+        AxiosResponse<ResponseByStatus<
+            '${id}',
+            HttpSuccessStatusCodes & ResponseCodesByOperationId<'${id}'>
+        >
+    >({
         method: '${method}',
         url: `${path}`,
         params: config?.query,
