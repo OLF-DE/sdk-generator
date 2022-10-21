@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 import { AxiosInstance, AxiosResponse } from 'axios';
-import { Operation, Response, HttpSuccessStatusCodes, ResponseCodesByOperationId } from './mapper';
+import { Operation, ResponseByStatus, HttpSuccessStatusCodes, ResponseCodesByOperationId } from './mapper';
 import { addInterceptor } from './axios.config';
 
 export class SDK {
