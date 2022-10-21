@@ -14,14 +14,14 @@ type ResponseCodesByOperationId<Id extends keyof operations> = operations[Id] ex
 type Query<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
   ? operations[Id]['parameters'] extends { query: unknown }
     ? operations[Id]['parameters']['query']
-    : Record<string, never>
-  : Record<string, never>;
+    : undefined
+  : undefined;
 
 type Params<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
   ? operations[Id]['parameters'] extends { path: unknown }
     ? operations[Id]['parameters']['path']
-    : Record<string, never>
-  : Record<string, never>;
+    : undefined
+  : undefined;
 
 type Body<Id extends keyof operations> = operations[Id] extends {
   requestBody: unknown;
@@ -64,13 +64,13 @@ type ResponseByStatus<
 
 type RequestConfig<Id extends keyof operations> = Omit<
   { params: Params<Id>; query: Query<Id>; body: Body<Id> },
-  Body<Id> extends undefined
+  (Body<Id> extends undefined
     ? 'body'
-    : never | Query<Id> extends undefined
+    : never) | (Query<Id> extends undefined
     ? 'query'
-    : never | Params<Id> extends undefined
+    : never) | (Params<Id> extends undefined
     ? 'params'
-    : never
+    : never)
 >;
 
 export type Operation<Id extends keyof operations> = (config: RequestConfig<Id>) => Promise<Response<Id>>;
