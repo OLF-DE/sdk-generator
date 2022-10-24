@@ -37,6 +37,7 @@ function generate() {
                 qs: '^6.11.0',
                 mongoose: '^6.6.5',
             },
+            type: 'module',
         };
         return fs_1.promises.writeFile(path_1.default.resolve(config_1.default['output-folder'], './package.json'), JSON.stringify(packageJson, null, 2), {
             flag: 'w',

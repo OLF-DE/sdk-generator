@@ -12,6 +12,7 @@ interface IPackageJson {
   scripts: Record<string, string>;
   devDependencies: Record<string, string>;
   dependencies: Record<string, string>;
+  type: string;
 }
 
 export async function generate() {
@@ -34,6 +35,7 @@ export async function generate() {
       qs: '^6.11.0',
       mongoose: '^6.6.5',
     },
+    type: 'module',
   };
 
   return fs.writeFile(path.resolve(config['output-folder'], './package.json'), JSON.stringify(packageJson, null, 2), {
