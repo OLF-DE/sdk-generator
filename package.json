@@ -9,7 +9,8 @@
     "build:types": "node ./generate.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --config .prettierrc './**/*.ts' --write"
+    "format": "prettier --config .prettierrc './**/*.ts' --write",
+    "prepare": "tsc -p ."
   },
   "bin": {
     "sdk-generator-types": "./generate.mjs",

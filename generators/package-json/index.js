@@ -28,6 +28,7 @@ function generate() {
             types: 'dist/client.d.ts',
             scripts: {
                 build: 'tsc',
+                prepare: 'tsc',
             },
             devDependencies: {
                 '@types/lodash': '^4.14.186',
