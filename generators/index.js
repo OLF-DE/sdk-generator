@@ -23,8 +23,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.packageJson = exports.mapperTs = exports.clientTs = exports.axiosConfigTs = void 0;
+exports.tsconfigJson = exports.packageJson = exports.mapperTs = exports.clientTs = exports.axiosConfigTs = void 0;
 exports.axiosConfigTs = __importStar(require("./axios-config-ts/index"));
 exports.clientTs = __importStar(require("./client-ts/index"));
 exports.mapperTs = __importStar(require("./mapper-ts"));
 exports.packageJson = __importStar(require("./package-json/index"));
+exports.tsconfigJson = __importStar(require("./tsconfig/index"));

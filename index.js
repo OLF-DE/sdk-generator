@@ -80,6 +80,7 @@ function main() {
         yield generators.clientTs.generate(Object.values(operations));
         yield generators.mapperTs.generate();
         yield generators.packageJson.generate();
+        yield generators.tsconfigJson.generate();
     });
 }
 if (require.main === module) {

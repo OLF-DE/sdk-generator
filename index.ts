@@ -62,6 +62,7 @@ async function main() {
   await generators.clientTs.generate(Object.values(operations));
   await generators.mapperTs.generate();
   await generators.packageJson.generate();
+  await generators.tsconfigJson.generate();
 }
 
 if (require.main === module) {
