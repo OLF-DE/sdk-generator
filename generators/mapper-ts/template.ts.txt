@@ -14,26 +14,18 @@ export type ResponseCodesByOperationId<Id extends keyof operations> = operations
   ? Exclude<keyof operations[Id]['responses'], 'default'>
   : undefined;
 
-type Query<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
-  ? operations[Id]['parameters'] extends { query: unknown }
-    ? operations[Id]['parameters']['query']
-    : undefined
+type Query<Id extends keyof operations> = operations[Id] extends { parameters: { query: unknown } }
+  ? operations[Id]['parameters']['query']
   : undefined;
 
-type Params<Id extends keyof operations> = operations[Id] extends { parameters: unknown }
-  ? operations[Id]['parameters'] extends { path: unknown }
-    ? operations[Id]['parameters']['path']
-    : undefined
+type Params<Id extends keyof operations> = operations[Id] extends { parameters: { path: unknown } }
+  ? operations[Id]['parameters']['path']
   : undefined;
 
 type Body<Id extends keyof operations> = operations[Id] extends {
-  requestBody: unknown;
+  requestBody: { content: { 'application/json': unknown } };
 }
-  ? operations[Id]['requestBody'] extends {
-      content: { 'application/json': unknown };
-    }
-    ? operations[Id]['requestBody']['content']['application/json']
-    : undefined
+  ? operations[Id]['requestBody']['content']['application/json']
   : undefined;
 
 type Response<Id extends keyof operations> = operations[Id] extends {
