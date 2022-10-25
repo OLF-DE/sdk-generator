@@ -5,7 +5,6 @@ import config from '../../config';
 interface ITSConfigJSON {
   compilerOptions: {
     incremental: boolean;
-    target: string;
     declaration: boolean;
     outDir: string;
     skipLibCheck: boolean;
@@ -19,7 +18,6 @@ export async function generate() {
   const packageJson: ITSConfigJSON = {
     compilerOptions: {
       incremental: true,
-      target: 'esnext',
       declaration: true,
       outDir: 'dist',
       skipLibCheck: true,

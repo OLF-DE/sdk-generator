@@ -21,7 +21,6 @@ function generate() {
         const packageJson = {
             compilerOptions: {
                 incremental: true,
-                target: 'esnext',
                 declaration: true,
                 outDir: 'dist',
                 skipLibCheck: true,

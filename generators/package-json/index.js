@@ -24,9 +24,10 @@ function generate() {
             description: '',
             author: 'Marc Erdmann',
             license: 'ISC',
-            main: 'client.ts',
+            main: 'dist/client.js',
+            types: 'dist/client.d.ts',
             scripts: {
-                build: 'tsc client.ts',
+                build: 'tsc',
             },
             devDependencies: {
                 '@types/lodash': '^4.14.186',
