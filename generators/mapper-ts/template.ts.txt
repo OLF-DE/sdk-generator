@@ -44,7 +44,7 @@ type Response<Id extends keyof operations> = operations[Id] extends {
     : undefined
   : undefined;
 
-type ResponseByStatus<
+export type ResponseByStatus<
   Id extends keyof operations,
   status extends ResponseCodesByOperationId<Id>
 > = operations[Id] extends {
