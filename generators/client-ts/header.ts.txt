@@ -1,8 +1,17 @@
+let http: any;
+let https: any;
+
 const axios = require('axios');
 
-import { AxiosInstance, AxiosResponse } from 'axios';
+import { isNode } from 'browser-or-node';
+import { AxiosInstance, CreateAxiosDefaults, AxiosResponse } from 'axios';
 import { Operation, ResponseByStatus, HttpSuccessStatusCodes, ResponseCodesByOperationId } from './mapper';
 import { addInterceptor } from './axios.config';
+
+if (isNode()) {
+    http = require('http');
+    https = require('https');
+}
 
 export class SDK {
     private axiosInstance: AxiosInstance;
@@ -12,11 +21,18 @@ export class SDK {
         timeout?: number,
         headers?: Record<string, string>,
     }) {
-        this.axiosInstance = axios.create({
+        const axiosConfig: CreateAxiosDefaults = {
             baseURL: config.baseURL,
             timeout: config.timeout,
             headers: config.headers,
-        });
+        };
+
+        if (isNode()) {
+            axiosConfig.httpAgent = new http.Agent({ keepAlive: true })
+            axiosConfig.httpsAgent = new https.Agent({ keepAlive: true })
+        }
+
+        this.axiosInstance = axios.create(axiosConfig);
 
         addInterceptor(this.axiosInstance);
     }
