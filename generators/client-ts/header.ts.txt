@@ -8,7 +8,7 @@ import { AxiosInstance, CreateAxiosDefaults, AxiosResponse } from 'axios';
 import { Operation, ResponseByStatus, HttpSuccessStatusCodes, ResponseCodesByOperationId } from './mapper';
 import { addInterceptor } from './axios.config';
 
-if (isNode()) {
+if (isNode) {
     http = require('http');
     https = require('https');
 }
