@@ -27,7 +27,7 @@ export class SDK {
             headers: config.headers,
         };
 
-        if (isNode()) {
+        if (isNode) {
             axiosConfig.httpAgent = new http.Agent({ keepAlive: true })
             axiosConfig.httpsAgent = new https.Agent({ keepAlive: true })
         }
