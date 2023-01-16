@@ -1,5 +1,4 @@
-let http: any;
-let https: any;
+let Agent: any;
 
 const axios = require('axios');
 
@@ -9,8 +8,7 @@ import { Operation, ResponseByStatus, HttpSuccessStatusCodes, ResponseCodesByOpe
 import { addInterceptor } from './axios.config';
 
 if (isNode) {
-    http = require('http');
-    https = require('https');
+    Agent = require("agentkeepalive");
 }
 
 export class SDK {
@@ -18,18 +16,23 @@ export class SDK {
 
     constructor(config: {
         baseURL: string,
-        timeout?: number,
+        requestTimeout?: number,
+        freeSocketTimeout?: number,
         headers?: Record<string, string>,
     }) {
         const axiosConfig: CreateAxiosDefaults = {
             baseURL: config.baseURL,
-            timeout: config.timeout,
+            timeout: config.requestTimeout,
             headers: config.headers,
         };
 
         if (isNode) {
-            axiosConfig.httpAgent = new http.Agent({ keepAlive: true })
-            axiosConfig.httpsAgent = new https.Agent({ keepAlive: true })
+            axiosConfig.httpAgent = new Agent({
+                freeSocketTimeout: config.freeSocketTimeout,
+            });
+            axiosConfig.httpsAgent = new Agent.HttpsAgent({
+                freeSocketTimeout: config.freeSocketTimeout,
+            });
         }
 
         this.axiosInstance = axios.create(axiosConfig);

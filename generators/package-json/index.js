@@ -34,7 +34,9 @@ function generate() {
                 '@types/lodash': '^4.14.186',
             },
             dependencies: {
+                agentkeepalive: '^4.2.1',
                 axios: '^1.1.2',
+                'browser-or-node': '^2.0.0',
                 lodash: '^4.17.21',
                 qs: '^6.11.0',
                 mongoose: '^6.6.5',
