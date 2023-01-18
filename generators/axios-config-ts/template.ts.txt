@@ -5,7 +5,7 @@ export function addInterceptor(axiosInstance: AxiosInstance) {
   // Add a request interceptor
   axiosInstance.interceptors.request.use(
     function (requestConfig: AxiosRequestConfig) {
-      if (!requestConfig.headers) requestConfig.headers = {};
+      if (!requestConfig.headers) requestConfig.headers = {} as Record<string, string | number | boolean>;
 
       // requestConfig.headers['User-Agent'] = `${config.npm_package_name} (v${config.npm_package_version})`;
       requestConfig.headers['Accept-Encoding'] = 'gzip';
