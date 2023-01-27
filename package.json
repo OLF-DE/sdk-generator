@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "run": "ts-node index.ts",
+    "run": "npm run build:types && ts-node index.ts",
     "build": "tsc -p .",
     "build:types": "node ./generate.mjs",
     "test": "echo \"Error: no test specified\" && exit 1",

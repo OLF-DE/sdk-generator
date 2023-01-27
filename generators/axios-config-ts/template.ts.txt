@@ -1,10 +1,10 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { omitBy, startsWith } from 'lodash';
 
 export function addInterceptor(axiosInstance: AxiosInstance) {
   // Add a request interceptor
   axiosInstance.interceptors.request.use(
-    function (requestConfig: AxiosRequestConfig) {
+    function (requestConfig: InternalAxiosRequestConfig) {
       if (!requestConfig.headers) requestConfig.headers = {} as typeof requestConfig.headers;
 
       // requestConfig.headers['User-Agent'] = `${config.npm_package_name} (v${config.npm_package_version})`;
