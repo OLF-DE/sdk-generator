@@ -18,29 +18,8 @@ const path_1 = __importDefault(require("path"));
 const config_1 = __importDefault(require("../../config"));
 function generate() {
     return __awaiter(this, void 0, void 0, function* () {
-        const packageJson = {
-            name: config_1.default.title,
-            version: '1.0.0',
-            description: '',
-            author: 'Marc Erdmann',
-            license: 'ISC',
-            main: 'client.ts',
-            scripts: {
-                build: 'tsc client.ts',
-            },
-            devDependencies: {
-                '@types/lodash': '^4.14.186',
-                typescript: '^4.9.5',
-            },
-            dependencies: {
-                axios: '^1.1.2',
-                'jsonpath-plus': '^7.2.0',
-                lodash: '^4.17.21',
-                qs: '^6.11.0',
-                mongoose: '^6.6.5',
-            },
-        };
-        return fs_1.promises.writeFile(path_1.default.resolve(config_1.default['output-folder'], './package.json'), JSON.stringify(packageJson, null, 2), {
+        const template = yield fs_1.promises.readFile(path_1.default.resolve(__dirname, './template.ts.txt'), { encoding: 'utf-8' });
+        return fs_1.promises.writeFile(path_1.default.resolve(config_1.default['output-folder'], './serdes.ts'), template, {
             flag: 'w',
         });
     });

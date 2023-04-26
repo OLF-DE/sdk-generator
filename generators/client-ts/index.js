@@ -32,7 +32,6 @@ function generate(operations) {
                 description: (_b = (_a = operation.description) !== null && _a !== void 0 ? _a : operation.summary) !== null && _b !== void 0 ? _b : '',
                 method: operation.method,
                 path: operation.path.replace(/\{(.*)\}/, '$${config.params.$1}'),
-                params: '',
             }));
         }
         fileContent = fileContent.concat('}');

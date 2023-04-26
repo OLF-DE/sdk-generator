@@ -36,21 +36,56 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = require("fs");
-const yaml_1 = __importDefault(require("yaml"));
+const lodash_1 = __importDefault(require("lodash"));
 const config_1 = __importDefault(require("./config"));
 const generators = __importStar(require("./generators"));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { bundle } = require('@apidevtools/swagger-cli');
 const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 function isHttpMethod(method) {
     return HTTP_METHODS.includes(method);
 }
+function generateJSONPaths(spec) {
+    const jsonPathByFormat = {};
+    switch (spec.type) {
+        case 'object': {
+            for (const property in spec.properties) {
+                const result = generateJSONPaths(spec.properties[property]);
+                for (const format in result) {
+                    if (!jsonPathByFormat[format])
+                        jsonPathByFormat[format] = [];
+                    jsonPathByFormat[format].push(...result[format].map((jsonPath) => (jsonPath !== '' ? `${property}.${jsonPath}` : property)));
+                }
+            }
+            break;
+        }
+        case 'array': {
+            const result = generateJSONPaths(spec.items);
+            for (const format in result) {
+                if (!jsonPathByFormat[format])
+                    jsonPathByFormat[format] = [];
+                jsonPathByFormat[format].push(...result[format].map((jsonPath) => `[*]${jsonPath}`));
+            }
+            break;
+        }
+        case 'string': {
+            const result = {};
+            if (spec.format) {
+                result[spec.format] = [''];
+            }
+            return result;
+        }
+        case 'number': {
+            return {};
+        }
+    }
+    return jsonPathByFormat;
+}
 function main() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const openApiFileContents = yield fs_1.promises.readFile(config_1.default['input-file'], {
-            encoding: 'utf-8',
-        });
-        const openApiSpec = yaml_1.default.parse(openApiFileContents);
+        const openApiSpec = JSON.parse(yield bundle(config_1.default['input-file'], {
+            dereference: true,
+        }));
         const operations = {};
         const paths = Object.keys(openApiSpec.paths);
         for (const path of paths) {
@@ -65,13 +100,21 @@ function main() {
                     console.error(`OperationId is missing for ${method} ${path}`);
                     continue;
                 }
+                /* START FEATURE: SerDes */
+                const jsonPathsByStatusAndFormat = {};
+                for (const [status, responseSpec] of Object.entries(operationSpec.responses)) {
+                    const responseContentSpec = lodash_1.default.get(responseSpec, 'content.application/json.schema');
+                    const jsonPathsByFormat = generateJSONPaths(responseContentSpec);
+                    jsonPathsByStatusAndFormat[status] = jsonPathsByFormat;
+                    console.log(jsonPathsByFormat);
+                }
+                /* END FEATURE: SerDes */
                 const operation = {
                     id: operationSpec.operationId,
                     summary: operationSpec.summary,
                     description: operationSpec.description,
                     path,
                     method,
-                    params: (_a = operationSpec.parameters) === null || _a === void 0 ? void 0 : _a.filter((p) => p.in === 'path'),
                 };
                 operations[operation.id] = operation;
             }

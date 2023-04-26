@@ -27,6 +27,7 @@ export async function generate() {
     },
     devDependencies: {
       '@types/lodash': '^4.14.186',
+      typescript: '^4.9.5',
     },
     dependencies: {
       axios: '^1.1.2',
