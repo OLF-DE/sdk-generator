@@ -30,6 +30,7 @@ export async function generate() {
     },
     devDependencies: {
       '@types/lodash': '^4.14.186',
+      typescript: '^4.9.5',
     },
     dependencies: {
       agentkeepalive: '^4.2.1',
