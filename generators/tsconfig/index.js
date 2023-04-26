@@ -22,6 +22,7 @@ function generate() {
             compilerOptions: {
                 incremental: true,
                 declaration: true,
+                target: 'ES2019',
                 outDir: 'dist',
                 skipLibCheck: true,
                 forceConsistentCasingInFileNames: true,

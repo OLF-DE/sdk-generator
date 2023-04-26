@@ -6,6 +6,7 @@ interface ITSConfigJSON {
   compilerOptions: {
     incremental: boolean;
     declaration: boolean;
+    target: string;
     outDir: string;
     skipLibCheck: boolean;
     forceConsistentCasingInFileNames: boolean;
@@ -19,6 +20,7 @@ export async function generate() {
     compilerOptions: {
       incremental: true,
       declaration: true,
+      target: 'ES2019',
       outDir: 'dist',
       skipLibCheck: true,
       forceConsistentCasingInFileNames: true,

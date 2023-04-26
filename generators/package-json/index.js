@@ -32,6 +32,7 @@ function generate() {
             },
             devDependencies: {
                 '@types/lodash': '^4.14.186',
+                '@types/node': '^18.16.1',
                 typescript: '^4.9.5',
             },
             dependencies: {
