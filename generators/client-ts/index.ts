@@ -19,7 +19,7 @@ export async function generate(operations: Array<IOperation>) {
         id: operation.id,
         description: operation.description ?? operation.summary ?? '',
         method: operation.method,
-        path: operation.path.replaceAll(/\{(.*)\}/, '$${config?.params?.$1}'),
+        path: operation.path.replaceAll(/\{([^}]+)\}/g, '${config?.params?.$1}'),
         params: '',
       })
     );
